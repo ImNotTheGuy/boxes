@@ -1,0 +1,34 @@
+{
+    "title": "Boxes",
+    "parent": "home",
+    "children": [
+        {
+            "title": "Box 1",
+            "parent": "Boxes",
+            "children": [
+                {
+                    "title": "Box 1.1",
+                    "parent": "box1"
+                },
+                {
+                    "title": "Box 1.2",
+                    "parent": "box1"
+                }
+            ]
+        },
+        {
+            "title": "Box 2",
+            "parent": "Boxes",
+            "children": [
+                {
+                    "title": "Box 2.1",
+                    "parent": "box2"
+                },
+                {
+                    "title": "Box 2.2",
+                    "parent": "box2"
+                }
+            ]
+        }
+    ]
+}

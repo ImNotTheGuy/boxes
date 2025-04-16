@@ -1,0 +1,7 @@
+<div class="flex w-screen h-screen items-center justify-center bg-gray-100">
+  <app-create-box></app-create-box>
+  <app-parent-box></app-parent-box>
+  @for (childBox of children; track childBox.title) {
+    <app-box></app-box>
+  }
+</div>
