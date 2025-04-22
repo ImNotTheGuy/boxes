@@ -1,7 +1,29 @@
-<div class="flex w-screen h-screen items-center justify-center bg-gray-100">
-  <app-create-box></app-create-box>
-  <app-parent-box></app-parent-box>
-  @for (childBox of children; track childBox.title) {
-    <app-box></app-box>
-  }
+<div class="flex flex-col w-screen h-screen bg-slate-100">
+
+  @if (currentBox) {
+  <div class="flex w-full h-1/6 items-center bg-slate-200">
+    @if (currentBox.parent) {
+    <button class="flex w-1/12 h-full justify-center items-center bg-amber-200" (click)="goToBox(currentBox.parent)">Go back</button>
+    <h1 class="flex w-11/12 h-full justify-center items-center border-1 border-pink-400 p-6 text-pink-400 text-3xl py-10">
+      <span class="border-1 rounded-md border-gray-300 py-6 px-12">
+        {{ currentBox.title }}
+      </span>
+    </h1>
+    } @else {
+      <h1 class="flex w-full h-full justify-center items-center bg-green-50 text-4xl py-10">
+        <span class=" p-6 text-pink-400">
+          🟪🟦🟫⬛ Your tasks as little boxes 🟩🟥🟪🟧
+        </span>
+      </h1>
+    }
+  </div>
+
+  <div class="flex w-full h-5/6 bg-blue-100 p-4">
+    <div class="grid grid-cols-4 gap-4 w-full h-full">
+      @for (box of currentBox.children; track box) {
+        <div class="aspect-square bg-green-100 flex items-center justify-center" (click)="goToBox(box)">{{ box }}</div>
+      }
+    </div>
+  </div>
+}
 </div>

@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Box } from '../models/box.model';
 
 @Component({
   selector: 'app-box',
@@ -9,5 +8,5 @@ import { Box } from '../models/box.model';
   styleUrl: './box.component.css'
 })
 export class BoxComponent {
-  @Input() box?: Box;
+
 }

@@ -1,59 +1,45 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
 import { BoxComponent } from './box/box.component';
 import { ParentBoxComponent } from './parent-box/parent-box.component';
+import { Box } from './models/box.model';
+import { HttpClient } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BoxComponent, ParentBoxComponent],
+  imports: [BoxComponent, ParentBoxComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-export class AppComponent {
-handleGoBack() {
-}
-  title = 'boxes';
-  parentTitle = 'Parent Box';
+export class AppComponent implements OnInit {
+  private http = inject(HttpClient);
 
+  private boxesUrl = 'assets/boxes.json';
 
-  initialTitle = 'Boxes';
+  boxes$!: Observable<Box[]>;
+  boxes: Box[] = [];
+  currentBox?: Box;
 
-  children = [
-    {
-      title: 'Box 1',
-      color: 'red',
-      children: [
-        {
-          title: 'Box 1.1',
-          color: 'orange',
-        },
-        {
-          title: 'Box 1.2',
-          color: 'purple',
-        }
-      ]
-    }, 
-    {
-      title: 'Box 2',
-      color: 'blue',
-    }, 
-    {
-      title: 'Box 3',
-      color: 'green',
-    }, 
-    {
-      title: 'Box 4',
-      color: 'yellow',
-    }
-  ];
-
-  initialChildren = this.children;
-
-  handleClick(childBox: {title: string, color: string, children: any[]}) {
-    this.children = childBox.children || [];
-    this.parentTitle = childBox.title;
+  ngOnInit(): void {
+    this.loadBoxes();
+    this.boxes$.subscribe((boxes) => {
+      console.log('Boxes loaded:', boxes);
+      this.boxes = boxes;
+      console.log('Boxes mapped:', this.boxes);
+      this.currentBox = this.boxes.find((box) => box.title === 'root');
+    });
   }
 
+  loadBoxes(): void {
+    this.boxes$ = this.http.get<Box[]>(this.boxesUrl).pipe(
+      catchError((err) => {
+        console.error('Error fetching boxes.json:', err);
+        return throwError(() => new Error('Failed to load boxes data'));
+      })
+    );
+  }
 
-
+  goToBox(boxToNavigateTo: string) {
+    this.currentBox = this.boxes.find((box) => box.title === boxToNavigateTo);
+  }
 }
